@@ -47,7 +47,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(cron = "0 0 13 * * *")
     public void sendFlightSummary() {
         chatIds.forEach(this::sendFlightSummaryToChat);
     }
