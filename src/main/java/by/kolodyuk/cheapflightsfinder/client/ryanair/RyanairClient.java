@@ -17,13 +17,13 @@ import java.util.stream.Collectors;
 public class RyanairClient {
 
     public static String API_URL = "https://api.ryanair.com";
-    public static String CHEAP_ROUND_TRIPS_PATH = "/farefinder/3/roundTripFares";
+    public static String API_PATH = "/farefinder/3/roundTripFares";
 
     @Autowired
     private RestTemplate restTemplate;
 
     public List<FlightRecord> getFlightsSummary() {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(API_URL + CHEAP_ROUND_TRIPS_PATH);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(API_URL + API_PATH);
         uriBuilder.queryParam("departureAirportIataCode", "VNO");
         uriBuilder.queryParam("durationFrom", "01");
         uriBuilder.queryParam("durationTo", "03");

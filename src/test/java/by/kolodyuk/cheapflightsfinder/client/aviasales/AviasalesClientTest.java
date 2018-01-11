@@ -1,4 +1,4 @@
-package by.kolodyuk.cheapflightsfinder.client.ryanair;
+package by.kolodyuk.cheapflightsfinder.client.aviasales;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,14 +8,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class RyanairClientTest {
+public class AviasalesClientTest {
 
     @Autowired
-    RyanairClient ryanairClient;
+    AviasalesClient aviasalesClient;
 
     @Test
     public void getFlightsSummary() throws Exception {
-        ryanairClient.getFlightsSummary().forEach(System.out::println);
+        aviasalesClient.getFlightsSummary().forEach(System.out::println);
     }
 
 }
