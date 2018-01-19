@@ -1,27 +1,28 @@
 package by.kolodyuk.cheapflightsfinder.client.aviasales;
 
 import by.kolodyuk.cheapflightsfinder.client.aviasales.model.AviasalesFightSearchResponse;
-import by.kolodyuk.cheapflightsfinder.client.aviasales.model.Flight;
-import by.kolodyuk.cheapflightsfinder.model.FlightRecord;
+import by.kolodyuk.cheapflightsfinder.model.Flight;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static by.kolodyuk.cheapflightsfinder.model.Flight.EUR;
 
 @Component
 public class AviasalesClient {
 
+    public static String SOURCE = "Aviasales";
     public static String API_URL = "http://api.travelpayouts.com";
     public static String API_PATH = "/v2/prices/latest";
 
     @Autowired
     private RestTemplate restTemplate;
 
-    public List<FlightRecord> getFlightsSummary() {
+    public List<Flight> getFlightsSummary() {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(API_URL + API_PATH);
         uriBuilder.queryParam("origin", "VNO");
         uriBuilder.queryParam("trip_duration", 0);
@@ -38,13 +39,15 @@ public class AviasalesClient {
         return response.getData().stream().map(this::convert).collect(Collectors.toList());
     }
 
-    private FlightRecord convert(Flight flight) {
-        FlightRecord flightRecord = new FlightRecord();
-        flightRecord.setPrice(flight.getPrice() + "€");
-        flightRecord.setFromCity(flight.getOrigin());
-        flightRecord.setToCity(flight.getDestination());
-        flightRecord.setFromDate(flight.getDepartDate().format(DateTimeFormatter.ofPattern("MMM dd")));
-        flightRecord.setToDate(flight.getReturnDate().format(DateTimeFormatter.ofPattern("MMM dd")));
+    private Flight convert(by.kolodyuk.cheapflightsfinder.client.aviasales.model.Flight flight) {
+        Flight flightRecord = new Flight();
+        flightRecord.setSource(SOURCE);
+        flightRecord.setPrice(flight.getPrice());
+        flightRecord.setCurrency(EUR);
+        flightRecord.setFromAirportIataCode(flight.getOrigin());
+        flightRecord.setToAirportIataCode(flight.getDestination());
+        flightRecord.setFromDate(flight.getDepartDate());
+        flightRecord.setToDate(flight.getReturnDate());
 
         return flightRecord;
     }

@@ -1,28 +1,31 @@
 package by.kolodyuk.cheapflightsfinder.client.ryanair;
 
-import by.kolodyuk.cheapflightsfinder.client.ryanair.model.Fare;
-import by.kolodyuk.cheapflightsfinder.client.ryanair.model.RyanairFlightSearchResponse;
-import by.kolodyuk.cheapflightsfinder.model.FlightRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import by.kolodyuk.cheapflightsfinder.client.ryanair.model.Fare;
+import by.kolodyuk.cheapflightsfinder.client.ryanair.model.RyanairFlightSearchResponse;
+import by.kolodyuk.cheapflightsfinder.model.Flight;
+
+import static by.kolodyuk.cheapflightsfinder.model.Flight.EUR;
 
 @Component
 public class RyanairClient {
 
+    public static String SOURCE = "Ryanair";
     public static String API_URL = "https://api.ryanair.com";
     public static String API_PATH = "/farefinder/3/roundTripFares";
 
     @Autowired
     private RestTemplate restTemplate;
 
-    public List<FlightRecord> getFlightsSummary() {
+    public List<Flight> getFlightsSummary() {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(API_URL + API_PATH);
         uriBuilder.queryParam("departureAirportIataCode", "VNO");
         uriBuilder.queryParam("durationFrom", "01");
@@ -39,15 +42,17 @@ public class RyanairClient {
         return response.getFares().stream().map(this::convert).collect(Collectors.toList());
     }
 
-    public FlightRecord convert(Fare fare) {
-        FlightRecord flightRecord = new FlightRecord();
-        flightRecord.setPrice(fare.getSummary().getPrice().getValue() + fare.getSummary().getPrice().getCurrencySymbol());
-        flightRecord.setFromCity(fare.getOutbound().getDepartureAirport().getName());
-        flightRecord.setToCity(fare.getOutbound().getArrivalAirport().getName());
-        flightRecord.setFromDate(fare.getOutbound().getDepartureDate().format(DateTimeFormatter.ofPattern("MMM dd")));
-        flightRecord.setToDate(fare.getInbound().getArrivalDate().format(DateTimeFormatter.ofPattern("MMM dd")));
+    public Flight convert(Fare fare) {
+        Flight flight = new Flight();
+        flight.setSource(SOURCE);
+        flight.setPrice(fare.getSummary().getPrice().getValue());
+        flight.setCurrency(EUR);
+        flight.setFromAirportIataCode(fare.getOutbound().getDepartureAirport().getIataCode());
+        flight.setToAirportIataCode(fare.getOutbound().getArrivalAirport().getIataCode());
+        flight.setFromDate(fare.getOutbound().getDepartureDate().toLocalDate());
+        flight.setToDate(fare.getInbound().getArrivalDate().toLocalDate());
 
-        return flightRecord;
+        return flight;
     }
 
 }

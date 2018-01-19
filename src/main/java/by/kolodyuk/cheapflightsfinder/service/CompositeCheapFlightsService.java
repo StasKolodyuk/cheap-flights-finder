@@ -1,6 +1,7 @@
 package by.kolodyuk.cheapflightsfinder.service;
 
-import by.kolodyuk.cheapflightsfinder.model.FlightRecord;
+import by.kolodyuk.cheapflightsfinder.client.iata.IataClient;
+import by.kolodyuk.cheapflightsfinder.model.Flight;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +14,14 @@ public class CompositeCheapFlightsService implements CheapFlightsService {
 
     @Autowired
     private List<CheapFlightsService> cheapFlightsServices;
+    @Autowired
+    IataClient iataClient;
 
     @Override
-    public List<FlightRecord> findCheapFlights() {
+    public List<Flight> findCheapFlights() {
         return cheapFlightsServices.stream()
                                    .map(CheapFlightsService::findCheapFlights)
                                    .flatMap(Collection::stream)
-                     .sorted(FlightRecord.PRICE_COMPARATOR).collect(Collectors.toList());
+                                   .sorted(Flight.PRICE_COMPARATOR).collect(Collectors.toList());
     }
 }

@@ -1,11 +1,6 @@
-package by.kolodyuk.cheapflightsfinder.model;
+package by.kolodyuk.cheapflightsfinder.representation;
 
-
-import java.util.Comparator;
-
-public class FlightRecord {
-
-    public static final Comparator<FlightRecord> PRICE_COMPARATOR = Comparator.comparing(FlightRecord::getPrice);
+public class TelegramFlight {
 
     String price;
     String fromCity;
@@ -55,6 +50,6 @@ public class FlightRecord {
 
     @Override
     public String toString() {
-        return price + " to "+ toCity + " (" + fromDate + " - " + toDate + ")";
+        return price + " from " + fromCity + " to " + toCity + " (" + fromDate + " - " + toDate + ")";
     }
 }

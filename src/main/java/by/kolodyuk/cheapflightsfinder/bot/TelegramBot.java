@@ -1,7 +1,7 @@
 package by.kolodyuk.cheapflightsfinder.bot;
 
 import by.kolodyuk.cheapflightsfinder.client.ryanair.RyanairClient;
-import by.kolodyuk.cheapflightsfinder.model.FlightRecord;
+import by.kolodyuk.cheapflightsfinder.model.Flight;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -32,12 +32,12 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private void sendFlightSummaryToChat(long chatId) {
         try {
-            List<FlightRecord> flightRecords = ryanairClient.getFlightsSummary();
+            List<Flight> flights = ryanairClient.getFlightsSummary();
 
 
             SendMessage message = new SendMessage()
                     .setChatId(chatId)
-                    .setText(flightRecords.stream().map(Object::toString).collect(Collectors.joining("\n")));
+                    .setText(flights.stream().map(Object::toString).collect(Collectors.joining("\n")));
 
             execute(message);
         } catch (RestClientException e) {
