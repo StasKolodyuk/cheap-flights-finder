@@ -7,14 +7,17 @@ public class Airport {
     private String icao;
     private String iata;
     private String name;
-    private String location;
+    @JsonProperty("ap_name")
+    private String longName;
+    private String city;
     private String country;
-    @JsonProperty("country_code")
-    private String countryCode;
-    private double longitude;
+    @JsonProperty("x")
     private double latitude;
-    private String link;
-    private String status;
+    @JsonProperty("y")
+    private double longitude;
+    private String timezone;
+    @JsonProperty("tz_id")
+    private String timezoneName;
 
     public String getIcao() {
         return icao;
@@ -40,12 +43,20 @@ public class Airport {
         this.name = name;
     }
 
-    public String getLocation() {
-        return location;
+    public String getLongName() {
+        return longName;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setLongName(String longName) {
+        this.longName = longName;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getCountry() {
@@ -56,12 +67,12 @@ public class Airport {
         this.country = country;
     }
 
-    public String getCountryCode() {
-        return countryCode;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
     public double getLongitude() {
@@ -72,27 +83,19 @@ public class Airport {
         this.longitude = longitude;
     }
 
-    public double getLatitude() {
-        return latitude;
+    public String getTimezone() {
+        return timezone;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
+    public void setTimezone(String timezone) {
+        this.timezone = timezone;
     }
 
-    public String getLink() {
-        return link;
+    public String getTimezoneName() {
+        return timezoneName;
     }
 
-    public void setLink(String link) {
-        this.link = link;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public void setTimezoneName(String timezoneName) {
+        this.timezoneName = timezoneName;
     }
 }

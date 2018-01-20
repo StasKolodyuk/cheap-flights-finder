@@ -1,5 +1,6 @@
 package by.kolodyuk.cheapflightsfinder.client.iata;
 
+import by.kolodyuk.cheapflightsfinder.client.ClientsConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.Test;
@@ -8,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-@SpringBootTest
+@SpringBootTest(classes = ClientsConfig.class, properties = "logging.level.org.apache.http=DEBUG")
 @RunWith(SpringRunner.class)
 public class IataClientTest {
 

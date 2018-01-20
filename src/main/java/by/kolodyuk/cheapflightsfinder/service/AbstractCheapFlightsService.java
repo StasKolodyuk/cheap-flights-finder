@@ -1,14 +1,15 @@
 package by.kolodyuk.cheapflightsfinder.service;
 
 import by.kolodyuk.cheapflightsfinder.client.iata.IataClient;
-import by.kolodyuk.cheapflightsfinder.client.iata.model.Airport;
+import by.kolodyuk.cheapflightsfinder.client.iata.model.IataResponse;
 import by.kolodyuk.cheapflightsfinder.model.Flight;
 import by.kolodyuk.cheapflightsfinder.model.FlightExtended;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 
 public abstract class AbstractCheapFlightsService implements CheapFlightsService {
 
@@ -30,25 +31,21 @@ public abstract class AbstractCheapFlightsService implements CheapFlightsService
         flightExtended.setToAirportIataCode(flight.getToAirportIataCode());
         flightExtended.setToDate(flight.getToDate());
 
-        Airport fromAirport = iataClient.getAirportInfo(flight.getFromAirportIataCode());
-        flightExtended.setFromAirport(fromAirport.getName());
-        flightExtended.setFromCity(getCity(fromAirport));
-        flightExtended.setFromCountry(getCountry(fromAirport));
+        IataResponse fromIataResponse = iataClient.getAirportInfo(flight.getFromAirportIataCode());
+        if (isNotEmpty(fromIataResponse.getAirports())) {
+            flightExtended.setFromAirport(fromIataResponse.getAirports().get(0).getName());
+            flightExtended.setFromCity(fromIataResponse.getAirports().get(0).getCity());
+            flightExtended.setFromCountry(fromIataResponse.getAirports().get(0).getCountry());
+        }
 
-        Airport toAirport = iataClient.getAirportInfo(flight.getToAirportIataCode());
-        flightExtended.setToAirport(toAirport.getName());
-        flightExtended.setToCity(getCity(toAirport));
-        flightExtended.setToCountry(getCountry(toAirport));
+        IataResponse toIataResponse = iataClient.getAirportInfo(flight.getToAirportIataCode());
+        if (isNotEmpty(toIataResponse.getAirports())) {
+            flightExtended.setToAirport(toIataResponse.getAirports().get(0).getName());
+            flightExtended.setToCity(toIataResponse.getAirports().get(0).getCity());
+            flightExtended.setToCountry(toIataResponse.getAirports().get(0).getCountry());
+        }
 
         return flightExtended;
-    }
-
-    private static String getCity(Airport airport) {
-        return StringUtils.substringBefore(airport.getLocation(), ",");
-    }
-
-    private static String getCountry(Airport airport) {
-        return StringUtils.substringAfter(airport.getLocation(), ",");
     }
 
 }

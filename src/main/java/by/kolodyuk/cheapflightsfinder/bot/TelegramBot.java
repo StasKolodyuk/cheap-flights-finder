@@ -1,7 +1,6 @@
 package by.kolodyuk.cheapflightsfinder.bot;
 
-import by.kolodyuk.cheapflightsfinder.client.ryanair.RyanairClient;
-import by.kolodyuk.cheapflightsfinder.model.Flight;
+import by.kolodyuk.cheapflightsfinder.controller.CheapFlightsController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -12,15 +11,13 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
 
     @Autowired
-    private RyanairClient ryanairClient;
+    private CheapFlightsController cheapFlightsController;
     private Set<Long> chatIds = new HashSet<>();
 
     @Override
@@ -32,12 +29,8 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private void sendFlightSummaryToChat(long chatId) {
         try {
-            List<Flight> flights = ryanairClient.getFlightsSummary();
-
-
-            SendMessage message = new SendMessage()
-                    .setChatId(chatId)
-                    .setText(flights.stream().map(Object::toString).collect(Collectors.joining("\n")));
+            SendMessage message = new SendMessage().setChatId(chatId)
+                                                   .setText(cheapFlightsController.findCheapFlightsAsString());
 
             execute(message);
         } catch (RestClientException e) {
