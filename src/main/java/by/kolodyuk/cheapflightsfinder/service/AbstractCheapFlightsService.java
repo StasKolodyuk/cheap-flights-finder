@@ -1,15 +1,14 @@
 package by.kolodyuk.cheapflightsfinder.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import by.kolodyuk.cheapflightsfinder.client.iata.IataClient;
 import by.kolodyuk.cheapflightsfinder.client.iata.model.Airport;
 import by.kolodyuk.cheapflightsfinder.model.Flight;
 import by.kolodyuk.cheapflightsfinder.model.FlightExtended;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class AbstractCheapFlightsService implements CheapFlightsService {
 
@@ -22,6 +21,7 @@ public abstract class AbstractCheapFlightsService implements CheapFlightsService
 
     private FlightExtended convert(Flight flight) {
         FlightExtended flightExtended = new FlightExtended();
+
         flightExtended.setPrice(flight.getPrice());
         flightExtended.setCurrency(flight.getCurrency());
         flightExtended.setSource(flight.getSource());
@@ -30,24 +30,25 @@ public abstract class AbstractCheapFlightsService implements CheapFlightsService
         flightExtended.setToAirportIataCode(flight.getToAirportIataCode());
         flightExtended.setToDate(flight.getToDate());
 
-        Airport fromAirport = iataClient.getAirportInfo();
+        Airport fromAirport = iataClient.getAirportInfo(flight.getFromAirportIataCode());
+        flightExtended.setFromAirport(fromAirport.getName());
+        flightExtended.setFromCity(getCity(fromAirport));
+        flightExtended.setFromCountry(getCountry(fromAirport));
 
+        Airport toAirport = iataClient.getAirportInfo(flight.getToAirportIataCode());
+        flightExtended.setToAirport(toAirport.getName());
+        flightExtended.setToCity(getCity(toAirport));
+        flightExtended.setToCountry(getCountry(toAirport));
 
-        Airport toAirport = iataClient.getAirportInfo();
-
-
-
-
-        flightExtended.setFromAirport();
+        return flightExtended;
     }
 
-    private String fromAirport;
-    private String fromCity;
-    private String fromCountry;
+    private static String getCity(Airport airport) {
+        return StringUtils.substringBefore(airport.getLocation(), ",");
+    }
 
-    private String toAirport;
-    private String toCity;
-    private String toCountry;
-
+    private static String getCountry(Airport airport) {
+        return StringUtils.substringAfter(airport.getLocation(), ",");
+    }
 
 }

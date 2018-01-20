@@ -1,5 +1,6 @@
 package by.kolodyuk.cheapflightsfinder.service;
 
+import by.kolodyuk.cheapflightsfinder.model.FlightExtended;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.Test;
@@ -12,8 +13,8 @@ import java.util.List;
 
 import by.kolodyuk.cheapflightsfinder.model.Flight;
 
-@SpringBootTest
 @RunWith(SpringRunner.class)
+@SpringBootTest(classes = ServicesConfig.class)
 public class CompositeCheapFlightsServiceTest {
 
     @Autowired
@@ -25,6 +26,13 @@ public class CompositeCheapFlightsServiceTest {
     @Test
     public void findCheapFlights() throws Exception {
         List<Flight> flights = cheapFlightsService.findCheapFlights();
+
+        System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(flights));
+    }
+
+    @Test
+    public void findCheapFlightsExtended() throws Exception {
+        List<FlightExtended> flights = cheapFlightsService.findCheapFlightsExtended();
 
         System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(flights));
     }

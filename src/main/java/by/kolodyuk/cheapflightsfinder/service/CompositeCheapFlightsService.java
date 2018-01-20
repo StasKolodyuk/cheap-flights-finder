@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class CompositeCheapFlightsService implements CheapFlightsService {
+public class CompositeCheapFlightsService extends AbstractCheapFlightsService {
 
     @Autowired
     private List<CheapFlightsService> cheapFlightsServices;
@@ -24,4 +24,5 @@ public class CompositeCheapFlightsService implements CheapFlightsService {
                                    .flatMap(Collection::stream)
                                    .sorted(Flight.PRICE_COMPARATOR).collect(Collectors.toList());
     }
+
 }
