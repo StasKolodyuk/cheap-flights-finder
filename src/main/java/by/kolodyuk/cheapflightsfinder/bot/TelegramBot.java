@@ -1,7 +1,12 @@
 package by.kolodyuk.cheapflightsfinder.bot;
 
 import by.kolodyuk.cheapflightsfinder.controller.CheapFlightsController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jmx.export.annotation.ManagedOperation;
+import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
@@ -14,7 +19,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Component
+@ManagedResource
 public class TelegramBot extends TelegramLongPollingBot {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TelegramBot.class);
+
+    @Value("${telegram.bot.name}")
+    private String name;
+    @Value("${telegram.bot.token}")
+    private String token;
 
     @Autowired
     private CheapFlightsController cheapFlightsController;
@@ -27,16 +40,26 @@ public class TelegramBot extends TelegramLongPollingBot {
         sendFlightSummaryToChat(chatId);
     }
 
+    @ManagedOperation
+    public void sendTextMessage(long chatId, String text) {
+        try {
+            SendMessage message = new SendMessage().setChatId(chatId).setText(text);
+            execute(message);
+        } catch (TelegramApiException e) {
+            LOGGER.error("Failed to send text message to chatId {} ", chatId);
+        }
+    }
+
+    @ManagedOperation
+    public void sendTextMessage(String text) {
+        chatIds.forEach(chatId -> sendTextMessage(chatId, text));
+    }
+
     private void sendFlightSummaryToChat(long chatId) {
         try {
-            SendMessage message = new SendMessage().setChatId(chatId)
-                                                   .setText(cheapFlightsController.findCheapFlightsAsString());
-
-            execute(message);
+            sendTextMessage(chatId, cheapFlightsController.findCheapFlightsAsString());
         } catch (RestClientException e) {
-            System.out.println("rest client ex" + e);
-        } catch (TelegramApiException e) {
-            System.out.println("telegram ex" + e);
+            LOGGER.error("Failed to send flight summary to chat {}", chatId);
         }
     }
 
@@ -47,11 +70,11 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "479810030:AAFk6PCmyEvV3cCaGLMB2nAnyLSgQBXCyfw";
+        return token;
     }
 
     @Override
     public String getBotUsername() {
-        return "CheapFlightsFinderBot";
+        return name;
     }
 }

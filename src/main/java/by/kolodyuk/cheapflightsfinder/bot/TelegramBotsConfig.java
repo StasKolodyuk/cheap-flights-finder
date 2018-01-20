@@ -14,16 +14,11 @@ public class TelegramBotsConfig {
     }
 
     @Bean
-    TelegramBotsApi telegramBotsApi() {
-        return new TelegramBotsApi();
-    }
-
-    @Bean
-    TelegramBot telegramBot(TelegramBotsApi telegramBotsApi) throws TelegramApiException {
-        TelegramBot telegramBot = new TelegramBot();
+    TelegramBotsApi telegramBotsApi(TelegramBot telegramBot) throws TelegramApiException {
+        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
         telegramBotsApi.registerBot(telegramBot);
 
-        return telegramBot;
+        return telegramBotsApi;
     }
 
 }

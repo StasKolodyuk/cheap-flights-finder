@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 @Service
 public class CompositeCheapFlightsService extends AbstractCheapFlightsService {
 
+    public static final Double MAX_PRICE_EUR = 50.0;
+
     @Autowired
     private List<CheapFlightsService> cheapFlightsServices;
     @Autowired
@@ -22,7 +24,9 @@ public class CompositeCheapFlightsService extends AbstractCheapFlightsService {
         return cheapFlightsServices.stream()
                                    .map(CheapFlightsService::findCheapFlights)
                                    .flatMap(Collection::stream)
-                                   .sorted(Flight.PRICE_COMPARATOR).collect(Collectors.toList());
+                                   .sorted(Flight.PRICE_COMPARATOR)
+                                   .filter(f -> f.getPrice() < MAX_PRICE_EUR)
+                                   .collect(Collectors.toList());
     }
 
 }
