@@ -11,9 +11,9 @@ import java.util.stream.Collectors;
 
 import by.kolodyuk.cheapflightsfinder.client.ryanair.model.Fare;
 import by.kolodyuk.cheapflightsfinder.client.ryanair.model.RyanairFlightSearchResponse;
-import by.kolodyuk.cheapflightsfinder.model.Flight;
+import by.kolodyuk.cheapflightsfinder.api.Flight;
 
-import static by.kolodyuk.cheapflightsfinder.model.Flight.EUR;
+import static by.kolodyuk.cheapflightsfinder.api.Flight.EUR;
 
 @Component
 public class RyanairClient {

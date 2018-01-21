@@ -1,6 +1,7 @@
 package by.kolodyuk.cheapflightsfinder.bot;
 
 import by.kolodyuk.cheapflightsfinder.controller.CheapFlightsController;
+import by.kolodyuk.cheapflightsfinder.service.TelegramClientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,6 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Component
 @ManagedResource
 public class TelegramBot extends TelegramLongPollingBot {
@@ -31,12 +29,13 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Autowired
     private CheapFlightsController cheapFlightsController;
-    private Set<Long> chatIds = new HashSet<>();
+    @Autowired
+    private TelegramClientService telegramClientService;
 
     @Override
     public void onUpdateReceived(Update update) {
         long chatId = update.getMessage().getChatId();
-        chatIds.add(chatId);
+        telegramClientService.saveClientChat(chatId);
         sendFlightSummaryToChat(chatId);
     }
 
@@ -52,7 +51,8 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @ManagedOperation
     public void sendTextMessage(String text) {
-        chatIds.forEach(chatId -> sendTextMessage(chatId, text));
+        telegramClientService.findAllClientChats()
+                .forEach(chatId -> sendTextMessage(chatId, text));
     }
 
     private void sendFlightSummaryToChat(long chatId) {
@@ -65,7 +65,8 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Scheduled(cron = "0 0 13 * * *")
     public void sendFlightSummary() {
-        chatIds.forEach(this::sendFlightSummaryToChat);
+        telegramClientService.findAllClientChats()
+                .forEach(this::sendFlightSummaryToChat);
     }
 
     @Override

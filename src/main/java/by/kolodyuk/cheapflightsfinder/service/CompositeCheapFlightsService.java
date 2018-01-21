@@ -1,7 +1,6 @@
 package by.kolodyuk.cheapflightsfinder.service;
 
-import by.kolodyuk.cheapflightsfinder.client.iata.IataClient;
-import by.kolodyuk.cheapflightsfinder.model.Flight;
+import by.kolodyuk.cheapflightsfinder.api.Flight;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +15,6 @@ public class CompositeCheapFlightsService extends AbstractCheapFlightsService {
 
     @Autowired
     private List<CheapFlightsService> cheapFlightsServices;
-    @Autowired
-    IataClient iataClient;
 
     @Override
     public List<Flight> findCheapFlights() {

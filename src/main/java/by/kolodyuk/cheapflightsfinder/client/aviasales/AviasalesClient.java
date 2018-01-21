@@ -1,7 +1,7 @@
 package by.kolodyuk.cheapflightsfinder.client.aviasales;
 
 import by.kolodyuk.cheapflightsfinder.client.aviasales.model.AviasalesFightSearchResponse;
-import by.kolodyuk.cheapflightsfinder.model.Flight;
+import by.kolodyuk.cheapflightsfinder.api.Flight;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -10,7 +10,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static by.kolodyuk.cheapflightsfinder.model.Flight.EUR;
+import static by.kolodyuk.cheapflightsfinder.api.Flight.EUR;
 
 @Component
 public class AviasalesClient {

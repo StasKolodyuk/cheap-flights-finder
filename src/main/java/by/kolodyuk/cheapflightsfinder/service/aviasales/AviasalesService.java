@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import by.kolodyuk.cheapflightsfinder.client.aviasales.AviasalesClient;
-import by.kolodyuk.cheapflightsfinder.model.Flight;
+import by.kolodyuk.cheapflightsfinder.api.Flight;
 import by.kolodyuk.cheapflightsfinder.service.CheapFlightsService;
 
 @Service

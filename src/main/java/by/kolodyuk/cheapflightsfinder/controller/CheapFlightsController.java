@@ -1,6 +1,6 @@
 package by.kolodyuk.cheapflightsfinder.controller;
 
-import by.kolodyuk.cheapflightsfinder.model.FlightExtended;
+import by.kolodyuk.cheapflightsfinder.api.FlightExtended;
 import by.kolodyuk.cheapflightsfinder.printer.FlightPrinter;
 import by.kolodyuk.cheapflightsfinder.service.CompositeCheapFlightsService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package by.kolodyuk.cheapflightsfinder.model;
+package by.kolodyuk.cheapflightsfinder.api;
 
 
 import java.time.LocalDate;

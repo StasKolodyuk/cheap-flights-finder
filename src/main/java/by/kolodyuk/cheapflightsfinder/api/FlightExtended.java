@@ -1,4 +1,4 @@
-package by.kolodyuk.cheapflightsfinder.model;
+package by.kolodyuk.cheapflightsfinder.api;
 
 
 public class FlightExtended extends Flight {

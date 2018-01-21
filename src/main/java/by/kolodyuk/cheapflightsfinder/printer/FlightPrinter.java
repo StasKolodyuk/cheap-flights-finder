@@ -1,6 +1,6 @@
 package by.kolodyuk.cheapflightsfinder.printer;
 
-import by.kolodyuk.cheapflightsfinder.model.FlightExtended;
+import by.kolodyuk.cheapflightsfinder.api.FlightExtended;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;

@@ -1,8 +1,7 @@
 package by.kolodyuk.cheapflightsfinder.service;
 
 
-import by.kolodyuk.cheapflightsfinder.model.Flight;
-import by.kolodyuk.cheapflightsfinder.model.FlightExtended;
+import by.kolodyuk.cheapflightsfinder.api.Flight;
 
 import java.util.List;
 
