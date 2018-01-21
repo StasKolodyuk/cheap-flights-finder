@@ -5,7 +5,6 @@ import by.kolodyuk.cheapflightsfinder.api.FlightCriteria;
 import by.kolodyuk.cheapflightsfinder.api.FlightExtended;
 import by.kolodyuk.cheapflightsfinder.client.iata.IataClient;
 import by.kolodyuk.cheapflightsfinder.client.iata.model.IataResponse;
-import by.kolodyuk.cheapflightsfinder.printer.FlightPrinter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;

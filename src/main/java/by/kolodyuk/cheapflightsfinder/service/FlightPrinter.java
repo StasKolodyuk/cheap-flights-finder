@@ -1,4 +1,4 @@
-package by.kolodyuk.cheapflightsfinder.printer;
+package by.kolodyuk.cheapflightsfinder.service;
 
 import by.kolodyuk.cheapflightsfinder.api.FlightExtended;
 import org.springframework.stereotype.Component;
