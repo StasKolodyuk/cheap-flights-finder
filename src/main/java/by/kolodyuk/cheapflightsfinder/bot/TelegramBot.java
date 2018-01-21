@@ -1,6 +1,6 @@
 package by.kolodyuk.cheapflightsfinder.bot;
 
-import by.kolodyuk.cheapflightsfinder.controller.CheapFlightsController;
+import by.kolodyuk.cheapflightsfinder.service.CompositeCheapFlightsService;
 import by.kolodyuk.cheapflightsfinder.service.TelegramClientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     private String token;
 
     @Autowired
-    private CheapFlightsController cheapFlightsController;
+    private CompositeCheapFlightsService compositeCheapFlightsService;
     @Autowired
     private TelegramClientService telegramClientService;
 
@@ -57,7 +57,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private void sendFlightSummaryToChat(long chatId) {
         try {
-            sendTextMessage(chatId, cheapFlightsController.findCheapFlightsAsString());
+            sendTextMessage(chatId, compositeCheapFlightsService.findCheapFlightsExtendedString());
         } catch (RestClientException e) {
             LOGGER.error("Failed to send flight summary to chat {}", chatId);
         }

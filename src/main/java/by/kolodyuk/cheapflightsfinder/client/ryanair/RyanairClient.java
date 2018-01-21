@@ -25,16 +25,16 @@ public class RyanairClient {
     @Autowired
     private RestTemplate restTemplate;
 
-    public List<Flight> getFlightsSummary() {
+    public List<Flight> getFlightsSummary(String fromIataCode, int durationFrom, int durationTo, double maxPrice) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(API_URL + API_PATH);
-        uriBuilder.queryParam("departureAirportIataCode", "VNO");
-        uriBuilder.queryParam("durationFrom", "01");
-        uriBuilder.queryParam("durationTo", "03");
+        uriBuilder.queryParam("departureAirportIataCode", fromIataCode);
+        uriBuilder.queryParam("durationFrom", durationFrom);
+        uriBuilder.queryParam("durationTo", durationTo);
         uriBuilder.queryParam("inboundDepartureDateFrom", LocalDate.now());
         uriBuilder.queryParam("inboundDepartureDateTo", LocalDate.now().plusYears(1));
         uriBuilder.queryParam("outboundDepartureDateFrom", LocalDate.now());
         uriBuilder.queryParam("outboundDepartureDateTo", LocalDate.now().plusYears(1));
-        uriBuilder.queryParam("priceValueTo", "50");
+        uriBuilder.queryParam("priceValueTo", maxPrice);
         uriBuilder.queryParam("language", "en");
 
         RyanairFlightSearchResponse response = restTemplate.getForObject(uriBuilder.build().encode().toUri(), RyanairFlightSearchResponse.class);

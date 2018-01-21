@@ -22,9 +22,9 @@ public class AviasalesClient {
     @Autowired
     private RestTemplate restTemplate;
 
-    public List<Flight> getFlightsSummary() {
+    public List<Flight> getFlightsSummary(String fromIataCode) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(API_URL + API_PATH);
-        uriBuilder.queryParam("origin", "VNO");
+        uriBuilder.queryParam("origin", fromIataCode);
         uriBuilder.queryParam("trip_duration", 0);
         uriBuilder.queryParam("currency", "EUR");
         uriBuilder.queryParam("sorting", "price");

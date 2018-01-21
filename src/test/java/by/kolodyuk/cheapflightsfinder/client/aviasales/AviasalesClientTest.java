@@ -16,7 +16,7 @@ public class AviasalesClientTest {
 
     @Test
     public void getFlightsSummary() throws Exception {
-        aviasalesClient.getFlightsSummary().forEach(System.out::println);
+        aviasalesClient.getFlightsSummary("VNO").forEach(System.out::println);
     }
 
 }

@@ -1,6 +1,7 @@
 package by.kolodyuk.cheapflightsfinder.service;
 
 import by.kolodyuk.cheapflightsfinder.api.Flight;
+import by.kolodyuk.cheapflightsfinder.api.FlightCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,18 +12,14 @@ import java.util.stream.Collectors;
 @Service
 public class CompositeCheapFlightsService extends AbstractCheapFlightsService {
 
-    public static final Double MAX_PRICE_EUR = 50.0;
-
     @Autowired
     private List<CheapFlightsService> cheapFlightsServices;
 
     @Override
-    public List<Flight> findCheapFlights() {
+    public List<Flight> findRawCheapFlights(FlightCriteria criteria) {
         return cheapFlightsServices.stream()
-                                   .map(CheapFlightsService::findCheapFlights)
+                                   .map(s -> s.findCheapFlights(criteria))
                                    .flatMap(Collection::stream)
-                                   .sorted(Flight.PRICE_COMPARATOR)
-                                   .filter(f -> f.getPrice() < MAX_PRICE_EUR)
                                    .collect(Collectors.toList());
     }
 

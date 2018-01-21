@@ -16,7 +16,7 @@ public class RyanairClientTest {
 
     @Test
     public void getFlightsSummary() throws Exception {
-        ryanairClient.getFlightsSummary().forEach(System.out::println);
+        ryanairClient.getFlightsSummary("VNO", 1, 3, 50.0).forEach(System.out::println);
     }
 
 }
