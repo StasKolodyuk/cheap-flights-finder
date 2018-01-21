@@ -12,15 +12,17 @@ public class FlightPrinter {
     public static final String N_A = "Location Unavailable";
 
     public String toString(FlightExtended flight) {
-        return getPrice(flight) + " " + getFlightInfo(flight) + " on " + getDates(flight);
+        StringBuilder result = new StringBuilder();
+        result.append(getPrice(flight) + " by " + flight.getSource() + "\n");
+        result.append("From " + getStartingPoint(flight) + "\n");
+        result.append("To " + getDestinationPoint(flight) + "\n");
+        result.append("On " + formatDate(flight.getFromDate()) + " - " + formatDate(flight.getToDate()) + "\n");
+
+        return result.toString();
     }
 
     public String getPrice(FlightExtended flight) {
         return String.format("%.2f%s", flight.getPrice(), flight.getCurrency());
-    }
-
-    public String getFlightInfo(FlightExtended flight) {
-        return "From " + getStartingPoint(flight) + " to " + getDestinationPoint(flight);
     }
 
     public String getStartingPoint(FlightExtended flight) {
@@ -45,10 +47,6 @@ public class FlightPrinter {
         }
 
         return flight.getToCity() + ", " + flight.getToCountry();
-    }
-
-    public String getDates(FlightExtended flight) {
-        return formatDate(flight.getFromDate()) + " - " + formatDate(flight.getToDate());
     }
 
     public String formatDate(LocalDate localDate) {

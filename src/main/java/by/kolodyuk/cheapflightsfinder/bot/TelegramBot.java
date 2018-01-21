@@ -45,7 +45,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             SendMessage message = new SendMessage().setChatId(chatId).setText(text);
             execute(message);
         } catch (TelegramApiException e) {
-            LOGGER.error("Failed to send text message to chatId {} ", chatId);
+            LOGGER.error("Failed to send text message to chatId {} ", chatId, e);
         }
     }
 
